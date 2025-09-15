@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sekolo Primary School - Application</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f4f9;
+      color: #333;
+    }
+    .navbar {
+      background: #0066cc;
+      color: white;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      gap: 15px;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar ul li a {
+      color: white;
+      text-decoration: none;
+    }
+    .home {
+      text-align: center;
+      padding: 50px;
+    }
+    .apply {
+      max-width: 500px;
+      margin: 40px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 3px 6px rgba(0,0,0,0.2);
+    }
+    .apply form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .apply input,
+    .apply select,
+    .apply button {
+      padding: 10px;
+      font-size: 16px;
+    }
+    .apply button {
+      background: #0066cc;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .apply button:hover {
+      background: #004999;
+    }
+  </style>
+
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
+    (function(){
+      emailjs.init("YxIxTuOHd_CpC5jMB"); // 🔑 Replace with your EmailJS public key
+    })();
+  </script>
+</head>
+<body>
+
+  <nav class="navbar">
+    <h2>Sekolo Primary School</h2>
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#apply">Apply</a></li>
+    </ul>
+  </nav>
+
+  <section id="home" class="home">
+    <h1>Welcome to Sekolo Primary School</h1>
+    <p>Excellence in Education & Growth for Every Learner.</p>
+  </section>
+
+  <section id="apply" class="apply">
+    <h2>Application Form</h2>
+    <form id="applicationForm">
+      <input type="text" name="student_name" placeholder="Student Full Name" required>
+      <input type="number" name="age" placeholder="Age" required>
+      <select name="grade" required>
+        <option value="">Select Grade</option>
+        <option value="1">Grade 1</option>
+        <option value="2">Grade 2</option>
+        <option value="3">Grade 3</option>
+        <option value="4">Grade 4</option>
+        <option value="5">Grade 5</option>
+        <option value="6">Grade 6</option>
+        <option value="7">Grade 7</option>
+      </select>
+      <input type="text" name="parent_name" placeholder="Parent/Guardian Name" required>
+      <input type="email" name="email" placeholder="Parent Email" required>
+      <button type="submit">Submit Application</button>
+    </form>
+  </section>
+
+  <script>
+    document.getElementById("applicationForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const form = this;
+
+      // 1️⃣ Send notification to OWNER (template_k61fw6o)
+      emailjs.sendForm("service_58yzynn", "template_k61fw6o", form)
+        .then(() => {
+          console.log("✅ Owner notified with student + parent details.");
+        }, (err) => {
+          console.error("❌ Owner email failed:", err);
+        });
+
+      // 2️⃣ Send confirmation to PARENT (template_8k8j9no)
+      emailjs.sendForm("service_58yzynn", "template_8k8j9no", form)
+        .then(() => {
+          alert("✅ Application submitted! Confirmation sent to your email.");
+          form.reset();
+        }, (err) => {
+          alert("❌ Submission error: " + JSON.stringify(err));
+        });
+    });
+  </script>
+
+</body>
+</html>
